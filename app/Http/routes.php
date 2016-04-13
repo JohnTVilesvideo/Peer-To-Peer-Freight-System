@@ -12,5 +12,10 @@
 */
 
 Route::get('/', function () {
+    $route = new \App\Route();
+    $route->start = "Hamilton";
+    $route->end = "Queenstown";
+    $route->save();
+    echo "hi";
     return view('welcome');
 });
