@@ -16,6 +16,7 @@ class CreateRoutesTable extends Migration
             $table->increments('id');
             $table->string("start");
             $table->string("end");
+            $table->timestamps();
         });
     }
 
