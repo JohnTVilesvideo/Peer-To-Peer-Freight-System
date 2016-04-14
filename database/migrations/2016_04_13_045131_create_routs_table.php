@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRoutesTable extends Migration
+class CreateRoutsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateRoutesTable extends Migration
      */
     public function up()
     {
-        Schema::create('routes', function (Blueprint $table) {
+        Schema::create('routs', function (Blueprint $table) {
             $table->increments('id');
             $table->string("start");
             $table->string("end");
@@ -27,6 +27,6 @@ class CreateRoutesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('routes');
+        Schema::drop('routs');
     }
 }

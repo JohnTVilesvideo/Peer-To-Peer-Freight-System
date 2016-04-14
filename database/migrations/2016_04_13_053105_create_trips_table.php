@@ -14,6 +14,8 @@ class CreateTripsTable extends Migration
     {
         Schema::create('trips', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer("userid")->unsigned();
+            $table->foreign("userid")->references("id")->on('users');
             $table->integer("driverrouteid")->unsigned();
             $table->foreign("driverrouteid")->references("id")->on('driverroutes');
             $table->float("posterprice");

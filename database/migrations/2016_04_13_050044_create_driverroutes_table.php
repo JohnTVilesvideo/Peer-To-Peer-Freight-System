@@ -17,7 +17,7 @@ class CreateDriverroutesTable extends Migration
             $table->integer('driverid')->unsigned();
             $table->foreign("driverid")->references('id')->on('users');
             $table->integer("routeid")->unsigned();
-            $table->foreign("routeid")->references('id')->on('routes');
+            $table->foreign("routeid")->references('id')->on('routs');
             $table->float('price');
             $table->string('capacity');
             $table->boolean("offered");
