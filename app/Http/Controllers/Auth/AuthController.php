@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -55,6 +59,7 @@ class AuthController extends Controller
         ]);
     }
 
+
     /**
      * Create a new user instance after a valid registration.
      *
@@ -66,7 +71,69 @@ class AuthController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'type' => $data['usertype'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+    public function getLogin()
+    {
+        return view("auth.login");
+    }
+    public function getRegister()
+    {
+        return view("auth.register");
+    }
+    public function getLogout()
+    {
+
+    }
+    public function postLogin()
+    {
+        $data = Input::all();
+        $rules = array(
+            'email'    => 'required|email', // make sure the email is an actual email
+            'password' => 'required|min:6' // password can only be alphanumeric and has to be greater than 3 characters
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+
+        if ($validator->fails()) {
+            return Redirect::to('login')
+                ->withErrors($validator) // send back all errors to the login form
+                ->withInput(Input::except('password')); // send back the input (not the password) so that we can repopulate the form
+        }
+        else{
+            $userdata = array(
+                'email'     => Input::get('email'),
+                'password'  => Input::get('password')
+            );
+            if (Auth::attempt($userdata)) {
+                $user = Auth::user();
+            }
+            else{
+                return "failed";
+            }
+        }
+        Session::put('key', 'value');
+        return Redirect::to('/');
+    }
+    public function postRegister()
+    {
+        $data = Input::all();
+        $validat = $this->validator($data);
+
+        if($validat->fails())
+        {
+            return "error";
+        }
+        else
+        {
+            if($data['usertype'] == 1 || $data['usertype'] == 2) {
+                $user = $this->create($data);
+                $user->save();
+                return "success";
+            }
+            else return "error user type";
+        }
     }
 }
