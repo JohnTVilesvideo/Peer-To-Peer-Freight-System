@@ -28,6 +28,7 @@
         <form action="cancelOrder" method="post">
             <tr>
                 <td>{{ $i + 1 }}</td>
+                <input type="hidden" name="userid" value="{{ $userId }}" />
                 <td><input type="hidden" name="trip" value="{{ $userTrips[$i]->tripid }}" /></td>
                 <td>{{ $userTrips[$i]->start }}</td>
                 <td>{{ $userTrips[$i]->end  }}</td>
@@ -40,9 +41,9 @@
                                             <th>{{ $userTrips[$i]->requestdate }}</th>
                                             <th>{{ $userTrips[$i]->startdate }}</th>-->
                 @if($userTrips[$i]->status == "Ordered")
-                    <th><input type="button" class="btn btn-warning" value="Cancel"/></th>
+                    <th><input type="submit" class="btn btn-warning" value="Cancel"/></th>
                 @else
-                    <th><input disabled="true" type="button" class="btn btn-warning" value="Cancel"/></th>
+                    <th><input disabled="true" type="submit" class="btn btn-warning" value="Cancel"/></th>
                 @endif
             </tr>
         </form>

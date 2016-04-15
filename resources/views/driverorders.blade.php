@@ -34,10 +34,10 @@
                     <td>{{ $userTrips[$i]->status }}</td>
                     <td>{{ $userTrips[$i]->posterprice}}</td>
                     @if($userTrips[$i]->status == "Ordered")
-                        <td><input type="button" class="btn btn-warning" value="Reject" formaction="RejectOrder" formmethod="post"/></td>
-                        <td><input type="button" class="btn btn-success" value="Start" formaction="StartOrder" formmethod="post"/></td>
+                        <td><input type="submit" class="btn btn-warning" value="Reject" formaction="RejectOrder" formmethod="post"/></td>
+                        <td><input type="submit" class="btn btn-success" value="Start" formaction="StartOrder" formmethod="post"/></td>
                     @elseif($userTrips[$i]->status == "Started")
-                        <td><input  type="button" class="btn btn-success" value="End" formaction="EndOrder" formmethod="post"/></td>
+                        <td><input  type="submit" class="btn btn-success" value="End" formaction="EndOrder" formmethod="post"/></td>
                     @endif
                 </tr>
             </form>

@@ -32,6 +32,7 @@
                             Poster
                         @endif
                     <input type="hidden" name="userid" value="{{ $users[$i]->id }}" />
+                    <input type="hidden" name="loginuserid" value="{{ $userId }}"/>
                     <td><input type="submit" class="btn btn-warning" value="Modify">
                     <input type="submit" class="btn btn-danger" value="Delete" formaction="DeleteUser" formmethod="post"/> </td>
                 </tr>
@@ -48,6 +49,7 @@
                     <option value="1">Driver</option>
                     <option value="2">Poster</option>
                 </select></td>
+            <input type="hidden" name="loginuserid" value="{{ $userId }}"/>
             <td><input type="submit" class="btn btn-success" value="Create" formaction="CreateUser" formmethod="post"/> </td>
         </tr>
         </form>

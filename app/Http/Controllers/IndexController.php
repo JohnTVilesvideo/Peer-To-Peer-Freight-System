@@ -6,10 +6,12 @@ use App\Driverroute;
 use App\Trip;
 use App\User;
 use App\Rout;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use PhpParser\Node\Expr\Array_;
@@ -366,39 +368,778 @@ class IndexController extends Controller
     //poster can cancel order
     public function postCancelOrder()
     {
-
+        //if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
+        $input = Input::all();
+        if($input->userid != $userId){
+            $errorMsg = "Wrong User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $trip = Trip::find($input->trip);
+        if($trip && $trip->userid == $input->userid)
+        {
+            $trip->delete();
+            return Redirect::to("posterorders");
+        }
+        else{
+            $errorMsg = "No such trip found or login user error!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+    }
+    //poster place order
+    public function postPlaceOrder()
+    {
+        //if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
+        $input = Input::all();
+        if($input->userid != $userId){
+            $errorMsg = "Wrong User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!$input->posterprice || ! is_numeric($input->posterprice)){
+            $errorMsg = "Wrong poster price!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $trip = new Trip();
+        $trip->userid = $input->userid;
+        $trip->driverrouteid = $input->driverrouteid;
+        $trip->posterprice = $input->posterprice;
+        $trip->status = 0;
+        $trip->requestdate = Carbon::now();
+        $trip->save();
+        return Redirect::to("posterorders");
     }
     //modify price capacity offered
     public function postModifyDriverRoutes()
     {
+        //if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
 
+        $input = Input::all();
+        if($input->userid != $userId){
+            $errorMsg = "Wrong User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!$input->capacity){
+            $errorMsg = "Wrong Capacity!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(! is_numeric($input->price)){
+            $errorMsg = "Wrong price!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $rout = Driverroute::find($input->driverrouteid);
+        if(!rout)
+        {
+            $errorMsg = "No such route found!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $rout->offered = $input->offered == "YES" ? "1" : "0";
+        $rout->capacity = $input->capacity;
+        $rout->price = $input->price;
+        $rout->save();
+        return Redirect::to("yourroutes");
     }
     public function postDeleteDriverRoutes()
     {
-
+//if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
+        $input = Input::all();
+        if($input->userid != $userId){
+            $errorMsg = "Wrong User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $rout = Driverroute::find($input->driverrouteid);
+        if(!$rout)
+        {
+            $errorMsg = "No such driver route found!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $rout->delete();
+        return Redirect::to("yourroutes");
     }
     public function postAddDriverRoutes()
     {
+//if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
 
+        $input = Input::all();
+        if($input->userid != $userId){
+            $errorMsg = "Wrong User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!$input->capacity){
+            $errorMsg = "Wrong Capacity!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(! is_numeric($input->price)){
+            $errorMsg = "Wrong price!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $rout = new Driverroute();
+        $rout->offered = $input->offered == "YES" ? "1" : "0";
+        $rout->capacity = $input->capacity;
+        $rout->price = $input->price;
+        $rout->routeid = $input->routeid;
+        $rout->driverid = $input->userid;
+        $rout->save();
+        return Redirect::to("yourroutes");
     }
-    public function postDriverChangeOrderStatus()
+    public function postRejectOrder()
     {
+        //if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
 
+        $input = Input::all();
+        if($input->userid != $userId){
+            $errorMsg = "Wrong User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $trip = Trip::find($input->trip);
+        if(!$trip){
+            $errorMsg = "No such order found!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $trip->status = 3;
+        $trip->save();
+        return Redirect::to("yourorders");
+    }
+    public function postStartOrder()
+    {
+        //if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
+
+        $input = Input::all();
+        if($input->userid != $userId){
+            $errorMsg = "Wrong User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $trip = Trip::find($input->trip);
+        if(!$trip){
+            $errorMsg = "No such order found!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $trip->status = 1;
+        $trip->save();
+        return Redirect::to("yourorders");
+    }
+    public function postEndOrder()
+    {
+        //if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
+
+        $input = Input::all();
+        if($input->userid != $userId){
+            $errorMsg = "Wrong User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $trip = Trip::find($input->trip);
+        if(!$trip){
+            $errorMsg = "No such order found!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $trip->status = 2;
+        $trip->save();
+        return Redirect::to("yourorders");
     }
     public function postAdminAddUser()
     {
+        //if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
 
+        $input = Input::all();
+        if($input->loginuserid != $userId){
+            $errorMsg = "Wrong Login User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!filter_var($input->email, FILTER_VALIDATE_EMAIL))
+        {
+            $errorMsg = "Wrong email format!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!$input->name)
+        {
+            $errorMsg = "Invalid name!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!$input->password || strlen($input->password) < 6){
+            $errorMsg = "Password need to be 6 bytes or more!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $user = new User();
+        $user->email = $input->email;
+        $user->name = $input->name;
+        $user->password = bcrypt($input->password);
+        $user->type = $input->type;
+        $user->save();
+        return Redirect::to("users");
     }
     public function postAdminModifyUser()
     {
+        //if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
 
+        $input = Input::all();
+        if($input->loginuserid != $userId){
+            $errorMsg = "Wrong Login User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!filter_var($input->email, FILTER_VALIDATE_EMAIL))
+        {
+            $errorMsg = "Wrong email format!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!$input->name)
+        {
+            $errorMsg = "Invalid name!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $user = User::find($input->userid);
+        if(!$user)
+        {
+            $errorMsg = "No such user found!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $user->email = $input->email;
+        $user->name = $input->name;
+        if($input->password && strlen($input->password) < 6){
+            $errorMsg = "Password need to be 6 bytes or more!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if($input->password) {
+            $user->password = bcrypt($input->password);
+        }
+        $user->save();
+        return Redirect::to("users");
     }
     public function postDeleteUser()
     {
+//if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
 
+        $input = Input::all();
+        if($input->loginuserid != $userId){
+            $errorMsg = "Wrong Login User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $user = User::find($input->userid);
+        if(!$user)
+        {
+            $errorMsg = "No such user found!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $user->delete();
+        return Redirect::to("users");
     }
     public function postAddRoute()
     {
+//if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
 
+        $input = Input::all();
+        if($input->userid != $userId){
+            $errorMsg = "Wrong Login User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!$input->start)
+        {
+            $errorMsg = "Invalid Start!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!$input->end)
+        {
+            $errorMsg = "Invalid End!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $rout = new Rout();
+        $rout->start = $input->start;
+        $rout->end = $input->end;
+        $rout->save();
+        return Redirect::to("routs");
+    }
+    public function postAdminDeleteRoute()
+    {
+//if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
+
+        $input = Input::all();
+        if($input->userid != $userId){
+            $errorMsg = "Wrong Login User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $rout = Rout::find($input->routeid);
+        if(!$rout)
+        {
+            $errorMsg = "No Such Route Found!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $rout->delete();
+        return Redirect::to("routs");
+
+    }
+    public function postAdminModifyRoute()
+    {
+//if(Auth::check() && $user = Auth::user()) {
+        if($this->login){
+            $user = new User();
+            if($this->test == 0)
+            {
+                $user->name = "Ben";
+                $user->type = 0;
+                $user->id = 1;
+            }
+            elseif ($this->test == 1)
+            {
+                $user->name = "Mick";
+                $user->type = 1;
+                $user->id = 2;
+            }
+            elseif($this->test == 2)
+            {
+                $user->name = "Anna";
+                $user->type = 2;
+                $user->id = 3;
+            }
+            $isLoggedin = true;
+            if($user->type == 0) $userType = "Admin";
+            elseif ($user->type == 1) $userType = "Driver";
+            elseif ($user->type == 2) $userType = "Poster";
+            else return abort(404);
+            $userName = $user->name;
+            $userId = $user->id;
+        }
+        else{
+            $isLoggedin = false;
+            return Redirect::to("auth/login");
+        }
+
+        $input = Input::all();
+        if($input->userid != $userId){
+            $errorMsg = "Wrong Login User!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!$input->start)
+        {
+            $errorMsg = "Invalid Start!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if(!$input->end)
+        {
+            $errorMsg = "Invalid End!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $rout = Rout::find($input->routeid);
+        if(!$rout)
+        {
+            $errorMsg = "No Such Route Found!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        $rout->start = $input->start;
+        $rout->end = $input->end;
+        $rout->save();
+        return Redirect::to("routs");
     }
 }

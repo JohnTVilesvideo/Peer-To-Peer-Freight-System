@@ -28,3 +28,19 @@ Route::get('yourorders', 'IndexController@getDriverOrders');
 Route::get('users', 'IndexController@getUsers');
 Route::get('routs', 'IndexController@getRoutes');
 Route::get('about', 'IndexController@getAbout');
+
+Route::post('placeOrder','IndexController@postPlaceOrder');
+Route::post('cancelOrder','IndexController@postCancelOrder');
+Route::post('ModifyYourRoute','IndexController@postModifyDriverRoutes');
+Route::post('DeleteYourRoute','IndexController@postDeleteDriverRoutes');
+Route::post('AddRoute','IndexController@postAddDriverRoutes');
+Route::post('RejectOrder','IndexController@postRejectOrder');
+Route::post('StartOrder','IndexController@postStartOrder');
+Route::post('EndOrder','IndexController@postEndOrder');
+Route::post('ModifyUser','IndexController@postAdminModifyUser');
+Route::post('DeleteUser','IndexController@postDeleteUser');
+Route::post('CreateUser','IndexController@postAdminAddUser');
+Route::post('ModifyRoute','IndexController@postAdminModifyRoute');
+Route::post('DeleteRoute','IndexController@postAdminDeleteRoute');
+Route::post('CreateRoute','IndexController@postAddRoute');
+

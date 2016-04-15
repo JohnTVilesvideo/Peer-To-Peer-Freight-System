@@ -37,8 +37,8 @@
                     </td>
                         <input type="hidden" name="userid" value="{{ $userId }}"/>
                         <input type="hidden" name="driverrouteid" value="{{ $driverroutes[$i]->driverrouteid }}" />
-                        <td><input type="button" class="btn btn-success" formaction="ModifyYourRoute" formmethod="post" value="Modify"/>
-                            <input type="button" class="btn btn-warning" formaction="DeleteYourRoute" formmethod="post" value="Delete"/>
+                        <td><input type="submit" class="btn btn-success" formaction="ModifyYourRoute" formmethod="post" value="Modify"/>
+                            <input type="submit" class="btn btn-warning" formaction="DeleteYourRoute" formmethod="post" value="Delete"/>
                         </td>
                 </tr>
             </form>
@@ -60,6 +60,7 @@
     <label style="width:80px;text-align: right;">Capacity:</label><input type="text" name="capacity"/><br>
     <label style="width:80px;text-align: right;">Offered:</label><input type="radio" id="offered" name="offered" value="YES"/> <label for="offered">YES</label>
     <input type="radio" id="unoffered" name="offered" value="NO"/> <label for="unoffered">NO</label><br>
+    <input type="hidden" name="userid" value="{{ $userId }}"/>
     <input type="submit" class="btn btn-success" value="Add" style="margin-left: 80px;"/>
 </form>
 @endsection
