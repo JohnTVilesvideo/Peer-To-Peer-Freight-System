@@ -22,8 +22,8 @@ class IndexController extends Controller
     private $login = 1;
     public function getIndex()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -42,7 +42,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -73,8 +73,8 @@ class IndexController extends Controller
     }
     public function getAbout()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -93,7 +93,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -112,8 +112,8 @@ class IndexController extends Controller
     }
     public function getPosterOrders()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -132,7 +132,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -171,8 +171,8 @@ class IndexController extends Controller
     }
     public function getYourRoutes()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -191,7 +191,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -221,8 +221,8 @@ class IndexController extends Controller
     }
     public function getDriverOrders()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -241,7 +241,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -291,8 +291,8 @@ class IndexController extends Controller
     }
     public function getUsers()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -311,7 +311,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -329,8 +329,8 @@ class IndexController extends Controller
     }
     public function getRoutes()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -349,7 +349,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -368,8 +368,8 @@ class IndexController extends Controller
     //poster can cancel order
     public function postCancelOrder()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -388,7 +388,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -420,8 +420,8 @@ class IndexController extends Controller
     //poster place order
     public function postPlaceOrder()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -440,7 +440,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -474,8 +474,8 @@ class IndexController extends Controller
     //modify price capacity offered
     public function postModifyDriverRoutes()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -494,7 +494,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -535,8 +535,8 @@ class IndexController extends Controller
     }
     public function postDeleteDriverRoutes()
     {
-//if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -555,7 +555,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -584,8 +584,8 @@ class IndexController extends Controller
     }
     public function postAddDriverRoutes()
     {
-//if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -604,7 +604,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -642,8 +642,8 @@ class IndexController extends Controller
     }
     public function postRejectOrder()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -662,7 +662,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -692,8 +692,8 @@ class IndexController extends Controller
     }
     public function postStartOrder()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -712,7 +712,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -742,8 +742,8 @@ class IndexController extends Controller
     }
     public function postEndOrder()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -762,7 +762,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -792,8 +792,8 @@ class IndexController extends Controller
     }
     public function postAdminAddUser()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -812,7 +812,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -855,8 +855,8 @@ class IndexController extends Controller
     }
     public function postAdminModifyUser()
     {
-        //if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -875,7 +875,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -924,8 +924,8 @@ class IndexController extends Controller
     }
     public function postDeleteUser()
     {
-//if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -944,7 +944,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -974,8 +974,8 @@ class IndexController extends Controller
     }
     public function postAddRoute()
     {
-//if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -994,7 +994,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -1031,8 +1031,8 @@ class IndexController extends Controller
     }
     public function postAdminDeleteRoute()
     {
-//if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -1051,7 +1051,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";
@@ -1082,8 +1082,8 @@ class IndexController extends Controller
     }
     public function postAdminModifyRoute()
     {
-//if(Auth::check() && $user = Auth::user()) {
-        if($this->login){
+        if(Auth::check() && $user = Auth::user()) {
+        /*if($this->login){
             $user = new User();
             if($this->test == 0)
             {
@@ -1102,7 +1102,7 @@ class IndexController extends Controller
                 $user->name = "Anna";
                 $user->type = 2;
                 $user->id = 3;
-            }
+            }*/
             $isLoggedin = true;
             if($user->type == 0) $userType = "Admin";
             elseif ($user->type == 1) $userType = "Driver";

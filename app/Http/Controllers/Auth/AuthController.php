@@ -83,10 +83,10 @@ class AuthController extends Controller
     {
         return view("auth.register");
     }
-    public function getLogout()
+    public function postLogout()
     {
-        Auth::logout();
-        return Redirect::to("/");
+        return 'hi';
+        //return Redirect::to("auth/login");
     }
     public function postLogin()
     {
