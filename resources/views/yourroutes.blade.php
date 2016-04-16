@@ -25,6 +25,7 @@
             <form>
                 <tr>
                     <td>{{ $i + 1 }}</td>
+                    {{ csrf_field() }}
                     <td>{{ $driverroutes[$i]->drivername }}</td>
                     <td>{{ $driverroutes[$i]->start }}</td>
                     <td>{{ $driverroutes[$i]->end }}</td>
@@ -48,6 +49,7 @@
 <h2>2.Add Route:</h2>
 <p>You can add a route with following form</p>
 <form action="AddRoute" method="post">
+    {{ csrf_field() }}
     <label style="width:80px;text-align: right;">Route:</label>
     <select name="routeid">
         @foreach($routs as $rout)
@@ -58,7 +60,7 @@
     </select><br>
     <label style="width:80px;text-align: right;">Price:</label><input type="number" name="price" /><br>
     <label style="width:80px;text-align: right;">Capacity:</label><input type="text" name="capacity"/><br>
-    <label style="width:80px;text-align: right;">Offered:</label><input type="radio" id="offered" name="offered" value="YES"/> <label for="offered">YES</label>
+    <label style="width:80px;text-align: right;">Offered:</label><input type="radio" checked id="offered" name="offered" value="YES"/> <label for="offered">YES</label>
     <input type="radio" id="unoffered" name="offered" value="NO"/> <label for="unoffered">NO</label><br>
     <input type="hidden" name="userid" value="{{ $userId }}"/>
     <input type="submit" class="btn btn-success" value="Add" style="margin-left: 80px;"/>

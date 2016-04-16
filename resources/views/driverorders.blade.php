@@ -22,6 +22,7 @@
         @for($i = 0; $i < count($userTrips); $i++)
             <form>
                 <tr>
+                    {{ csrf_field() }}
                     <td>{{ $i + 1 }}</td>
                     <input type="hidden" name="trip" value="{{ $userTrips[$i]->tripid }}" />
                     <input type="hidden" name="userid" value="{{ $userId }}"/>

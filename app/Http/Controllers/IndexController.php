@@ -18,6 +18,11 @@ use PhpParser\Node\Expr\Array_;
 
 class IndexController extends Controller
 {
+
+    public function __construct()
+    {
+        //$this->middleware('auth');
+    }
     private $test = 0;
     private $login = 1;
     public function getIndex()
@@ -402,12 +407,12 @@ class IndexController extends Controller
             return Redirect::to("auth/login");
         }
         $input = Input::all();
-        if($input->userid != $userId){
+        if($input['userid'] != $userId){
             $errorMsg = "Wrong User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $trip = Trip::find($input->trip);
-        if($trip && $trip->userid == $input->userid)
+        $trip = Trip::find($input['trip']);
+        if($trip && $trip->userid == $input['userid'])
         {
             $trip->delete();
             return Redirect::to("posterorders");
@@ -454,18 +459,19 @@ class IndexController extends Controller
             return Redirect::to("auth/login");
         }
         $input = Input::all();
-        if($input->userid != $userId){
+        if($input['userid'] != $userId){
             $errorMsg = "Wrong User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!$input->posterprice || ! is_numeric($input->posterprice)){
-            $errorMsg = "Wrong poster price!";
-            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
-        }
+
         $trip = new Trip();
-        $trip->userid = $input->userid;
-        $trip->driverrouteid = $input->driverrouteid;
-        $trip->posterprice = $input->posterprice;
+        $trip->userid = $input['userid'];
+        $trip->driverrouteid = $input['driverrouteid'];
+        if(!$input['posterprice']){
+            $trip->posterprice = Driverroute::find($input['driverrouteid'])->price;
+            $trip->price = Driverroute::find($input['driverrouteid'])->price;
+
+        }
         $trip->status = 0;
         $trip->requestdate = Carbon::now();
         $trip->save();
@@ -509,27 +515,27 @@ class IndexController extends Controller
         }
 
         $input = Input::all();
-        if($input->userid != $userId){
+        if($input['userid'] != $userId){
             $errorMsg = "Wrong User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!$input->capacity){
+        if(!$input['capacity']){
             $errorMsg = "Wrong Capacity!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(! is_numeric($input->price)){
+        if(! is_numeric($input['price'])){
             $errorMsg = "Wrong price!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $rout = Driverroute::find($input->driverrouteid);
-        if(!rout)
+        $rout = Driverroute::find($input['driverrouteid']);
+        if(!$rout)
         {
             $errorMsg = "No such route found!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $rout->offered = $input->offered == "YES" ? "1" : "0";
-        $rout->capacity = $input->capacity;
-        $rout->price = $input->price;
+        $rout->offered = $input['offered'] == "YES" ? "1" : "0";
+        $rout->capacity = $input['capacity'];
+        $rout->price = $input['price'];
         $rout->save();
         return Redirect::to("yourroutes");
     }
@@ -569,16 +575,17 @@ class IndexController extends Controller
             return Redirect::to("auth/login");
         }
         $input = Input::all();
-        if($input->userid != $userId){
+        if($input['userid'] != $userId){
             $errorMsg = "Wrong User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $rout = Driverroute::find($input->driverrouteid);
+        $rout = Driverroute::find($input['driverrouteid']);
         if(!$rout)
         {
             $errorMsg = "No such driver route found!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
+        Trip::where("driverrouteid", $input['driverrouteid'])->delete();
         $rout->delete();
         return Redirect::to("yourroutes");
     }
@@ -619,24 +626,24 @@ if(Auth::check() && $user = Auth::user()) {
         }
 
         $input = Input::all();
-        if($input->userid != $userId){
+        if($input['userid'] != $userId){
             $errorMsg = "Wrong User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!$input->capacity){
+        if(!$input['capacity']){
             $errorMsg = "Wrong Capacity!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(! is_numeric($input->price)){
+        if(! is_numeric($input['price'])){
             $errorMsg = "Wrong price!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
         $rout = new Driverroute();
-        $rout->offered = $input->offered == "YES" ? "1" : "0";
-        $rout->capacity = $input->capacity;
-        $rout->price = $input->price;
-        $rout->routeid = $input->routeid;
-        $rout->driverid = $input->userid;
+        $rout->offered = $input['offered'] == "YES" ? "1" : "0";
+        $rout->capacity = $input['capacity'];
+        $rout->price = $input['price'];
+        $rout->routeid = $input['routeid'];
+        $rout->driverid = $input['userid'];
         $rout->save();
         return Redirect::to("yourroutes");
     }
@@ -677,11 +684,11 @@ if(Auth::check() && $user = Auth::user()) {
         }
 
         $input = Input::all();
-        if($input->userid != $userId){
+        if($input['userid'] != $userId){
             $errorMsg = "Wrong User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $trip = Trip::find($input->trip);
+        $trip = Trip::find($input['trip']);
         if(!$trip){
             $errorMsg = "No such order found!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
@@ -727,11 +734,11 @@ if(Auth::check() && $user = Auth::user()) {
         }
 
         $input = Input::all();
-        if($input->userid != $userId){
+        if($input['userid'] != $userId){
             $errorMsg = "Wrong User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $trip = Trip::find($input->trip);
+        $trip = Trip::find($input['trip']);
         if(!$trip){
             $errorMsg = "No such order found!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
@@ -777,11 +784,11 @@ if(Auth::check() && $user = Auth::user()) {
         }
 
         $input = Input::all();
-        if($input->userid != $userId){
+        if($input['userid'] != $userId){
             $errorMsg = "Wrong User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $trip = Trip::find($input->trip);
+        $trip = Trip::find($input['trip']);
         if(!$trip){
             $errorMsg = "No such order found!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
@@ -827,29 +834,29 @@ if(Auth::check() && $user = Auth::user()) {
         }
 
         $input = Input::all();
-        if($input->loginuserid != $userId){
+        if($input['loginuserid'] != $userId){
             $errorMsg = "Wrong Login User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!filter_var($input->email, FILTER_VALIDATE_EMAIL))
+        if(!filter_var($input['email'], FILTER_VALIDATE_EMAIL))
         {
             $errorMsg = "Wrong email format!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!$input->name)
+        if(!$input['name'])
         {
             $errorMsg = "Invalid name!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!$input->password || strlen($input->password) < 6){
+        if(!$input['password'] || strlen($input['password']) < 6){
             $errorMsg = "Password need to be 6 bytes or more!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
         $user = new User();
-        $user->email = $input->email;
-        $user->name = $input->name;
-        $user->password = bcrypt($input->password);
-        $user->type = $input->type;
+        $user->email = $input['email'];
+        $user->name = $input['name'];
+        $user->password = bcrypt($input['password']);
+        $user->type = $input['type'];
         $user->save();
         return Redirect::to("users");
     }
@@ -890,34 +897,34 @@ if(Auth::check() && $user = Auth::user()) {
         }
 
         $input = Input::all();
-        if($input->loginuserid != $userId){
+        if($input['loginuserid'] != $userId){
             $errorMsg = "Wrong Login User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!filter_var($input->email, FILTER_VALIDATE_EMAIL))
+        if(!filter_var($input['email'], FILTER_VALIDATE_EMAIL))
         {
             $errorMsg = "Wrong email format!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!$input->name)
+        if(!$input['name'])
         {
             $errorMsg = "Invalid name!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $user = User::find($input->userid);
+        $user = User::find($input['userid']);
         if(!$user)
         {
             $errorMsg = "No such user found!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $user->email = $input->email;
-        $user->name = $input->name;
-        if($input->password && strlen($input->password) < 6){
+        $user->email = $input['email'];
+        $user->name = $input['name'];
+        if($input['password'] && strlen($input['password']) < 6){
             $errorMsg = "Password need to be 6 bytes or more!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if($input->password) {
-            $user->password = bcrypt($input->password);
+        if($input['password']) {
+            $user->password = bcrypt($input['password']);
         }
         $user->save();
         return Redirect::to("users");
@@ -959,17 +966,38 @@ if(Auth::check() && $user = Auth::user()) {
         }
 
         $input = Input::all();
-        if($input->loginuserid != $userId){
+        if($input['loginuserid'] == $input['userid']){
+            $errorMsg = "You can't delete the current login user!";
+            return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
+        }
+        if($input['loginuserid'] != $userId){
             $errorMsg = "Wrong Login User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $user = User::find($input->userid);
+        $user = User::find($input['userid']);
         if(!$user)
         {
             $errorMsg = "No such user found!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $user->delete();
+        if($user->type == 1)
+        {
+            $driverroutes = Driverroute::where("driverid", $user->id)->get();
+            foreach ($driverroutes as $driverroute)
+            {
+                Trip::where("driverrouteid", $driverroute->id)->delete();
+            }
+            Driverroute::where("driverid", $user->id)->delete();
+            $user->delete();
+        }
+        elseif ($user->type == 2)
+        {
+            Trip::where("userid", $user->id)->delete();
+            $user->delete();
+        }
+        else{
+            $user->delete();
+        }
         return Redirect::to("users");
     }
     public function postAddRoute()
@@ -1009,23 +1037,23 @@ if(Auth::check() && $user = Auth::user()) {
         }
 
         $input = Input::all();
-        if($input->userid != $userId){
+        if($input['userid'] != $userId){
             $errorMsg = "Wrong Login User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!$input->start)
+        if(!$input['start'])
         {
             $errorMsg = "Invalid Start!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!$input->end)
+        if(!$input['end'])
         {
             $errorMsg = "Invalid End!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
         $rout = new Rout();
-        $rout->start = $input->start;
-        $rout->end = $input->end;
+        $rout->start = $input['start'];
+        $rout->end = $input['end'];
         $rout->save();
         return Redirect::to("routs");
     }
@@ -1066,16 +1094,22 @@ if(Auth::check() && $user = Auth::user()) {
         }
 
         $input = Input::all();
-        if($input->userid != $userId){
+        if($input['userid'] != $userId){
             $errorMsg = "Wrong Login User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $rout = Rout::find($input->routeid);
+        $rout = Rout::find($input['routeid']);
         if(!$rout)
         {
             $errorMsg = "No Such Route Found!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
+        $driverroutes = Driverroute::where("routeid", $rout->id)->get();
+        foreach ($driverroutes as $driverroute)
+        {
+            Trip::where("driverrouteid", $driverroute->id)->delete();
+        }
+        Driverroute::where("routeid", $rout->id)->delete();
         $rout->delete();
         return Redirect::to("routs");
 
@@ -1117,28 +1151,28 @@ if(Auth::check() && $user = Auth::user()) {
         }
 
         $input = Input::all();
-        if($input->userid != $userId){
+        if($input['userid'] != $userId){
             $errorMsg = "Wrong Login User!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!$input->start)
+        if(!$input['start'])
         {
             $errorMsg = "Invalid Start!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        if(!$input->end)
+        if(!$input['end'])
         {
             $errorMsg = "Invalid End!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $rout = Rout::find($input->routeid);
+        $rout = Rout::find($input['routeid']);
         if(!$rout)
         {
             $errorMsg = "No Such Route Found!";
             return view("error", compact("isLoggedin", "userId", "userName", "userType", "errorMsg"));
         }
-        $rout->start = $input->start;
-        $rout->end = $input->end;
+        $rout->start = $input['start'];
+        $rout->end = $input['end'];
         $rout->save();
         return Redirect::to("routs");
     }

@@ -49,9 +49,9 @@
                     <ul class="nav navbar-nav navbar-right">
                         @if($isLoggedin)
                             <li><a>Welcome {{ $userType }}: {{ $userName }} </a></li>
-                            <li><form><input class="btn" type="submit" formaction="auth/logout" value="Logout" formmethod="post"/> </form></li>
+                            <li><a href="logout">Logout&nbsp;</a> </li>
                         @else
-                            <li><a href="auth/login">Login &nbsp;</a> </li>
+                            <li><a href="login">Login &nbsp;</a> </li>
                         @endif
                     </ul>
                 </nav>

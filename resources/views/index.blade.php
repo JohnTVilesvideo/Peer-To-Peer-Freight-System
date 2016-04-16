@@ -27,6 +27,7 @@
             <form action="placeOrder" method="post">
          @endif
         <tr>
+            {{ csrf_field() }}
             <td>{{ $i + 1 }}</td>
             <td>{{ $driverroutes[$i]->drivername }}</td>
             <td>{{ $driverroutes[$i]->start }}</td>

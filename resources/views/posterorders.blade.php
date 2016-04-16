@@ -28,6 +28,7 @@
         <form action="cancelOrder" method="post">
             <tr>
                 <td>{{ $i + 1 }}</td>
+                {{ csrf_field() }}
                 <input type="hidden" name="userid" value="{{ $userId }}" />
                 <td><input type="hidden" name="trip" value="{{ $userTrips[$i]->tripid }}" /></td>
                 <td>{{ $userTrips[$i]->start }}</td>

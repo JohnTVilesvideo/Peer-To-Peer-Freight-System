@@ -14,9 +14,9 @@
 
 
 // Authentication routes...
-Route::get('auth/login', 'Auth\AuthController@getLogin');
-Route::post('auth/login', 'Auth\AuthController@postLogin');
-Route::post('auth/logout', 'Auth\AuthController@postLogout');
+//Route::get('auth/login', 'Auth\AuthController@getLogin');
+//Route::post('auth/login', 'Auth\AuthController@postLogin');
+//Route::post('auth/logout', 'Auth\AuthController@postLogout');
 
 // Registration routes...
 Route::get('auth/register', 'Auth\AuthController@getRegister');
@@ -44,3 +44,7 @@ Route::post('ModifyRoute','IndexController@postAdminModifyRoute');
 Route::post('DeleteRoute','IndexController@postAdminDeleteRoute');
 Route::post('CreateRoute','IndexController@postAddRoute');
 
+
+Route::auth();
+
+//Route::get('/home', 'HomeController@index');
