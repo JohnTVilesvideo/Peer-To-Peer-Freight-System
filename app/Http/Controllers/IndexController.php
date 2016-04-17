@@ -148,7 +148,7 @@ class IndexController extends Controller
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         //get user trips
@@ -207,7 +207,7 @@ class IndexController extends Controller
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
         $data = Driverroute::where("driverid", $userId)->get();
         $driverroutes = $data;
@@ -257,7 +257,7 @@ class IndexController extends Controller
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
         // get driver routes
         $driverroutes = Driverroute::where("driverid", $userId)->get();
@@ -280,6 +280,7 @@ class IndexController extends Controller
             $userTrips[$i]->start = Rout::find(Driverroute::find($dataTrips[$i]->driverrouteid)->routeid)->start;
             $userTrips[$i]->end = Rout::find(Driverroute::find($dataTrips[$i]->driverrouteid)->routeid)->end;
             $userTrips[$i]->drivername = User::find(Driverroute::find($dataTrips[$i]->driverrouteid)->driverid)->name;
+            $userTrips[$i]->postername = User::find($dataTrips[$i]->userid)->name;
             $userTrips[$i]->posterprice = $dataTrips[$i]->posterprice;
             $userTrips[$i]->capacity = Driverroute::find($dataTrips[$i]->driverrouteid)->capacity;
             $userTrips[$i]->yourprice = Driverroute::find($dataTrips[$i]->driverrouteid)->price;
@@ -327,7 +328,7 @@ class IndexController extends Controller
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
         $users = User::all();
         return view("users", compact("isLoggedin", "userType", "userName", "userId", "users"));
@@ -365,7 +366,7 @@ class IndexController extends Controller
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
         $routs = Rout::all();
         return view("routs", compact("isLoggedin", "userType", "userName", "userId", "routs"));
@@ -404,7 +405,7 @@ class IndexController extends Controller
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
         $input = Input::all();
         if($input['userid'] != $userId){
@@ -456,7 +457,7 @@ class IndexController extends Controller
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
         $input = Input::all();
         if($input['userid'] != $userId){
@@ -469,10 +470,12 @@ class IndexController extends Controller
         $trip->driverrouteid = $input['driverrouteid'];
         if(!$input['posterprice']){
             $trip->posterprice = Driverroute::find($input['driverrouteid'])->price;
-            $trip->price = Driverroute::find($input['driverrouteid'])->price;
+            //echo $trip->posterprice;
+            //$trip->price =       Driverroute::find($input['driverrouteid'])->price;
 
         }
         $trip->status = 0;
+        $trip->feedback = $input['feedback'];
         $trip->requestdate = Carbon::now();
         $trip->save();
         return Redirect::to("posterorders");
@@ -511,7 +514,7 @@ class IndexController extends Controller
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         $input = Input::all();
@@ -572,7 +575,7 @@ class IndexController extends Controller
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
         $input = Input::all();
         if($input['userid'] != $userId){
@@ -622,7 +625,7 @@ if(Auth::check() && $user = Auth::user()) {
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         $input = Input::all();
@@ -680,7 +683,7 @@ if(Auth::check() && $user = Auth::user()) {
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         $input = Input::all();
@@ -730,7 +733,7 @@ if(Auth::check() && $user = Auth::user()) {
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         $input = Input::all();
@@ -780,7 +783,7 @@ if(Auth::check() && $user = Auth::user()) {
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         $input = Input::all();
@@ -830,7 +833,7 @@ if(Auth::check() && $user = Auth::user()) {
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         $input = Input::all();
@@ -893,7 +896,7 @@ if(Auth::check() && $user = Auth::user()) {
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         $input = Input::all();
@@ -962,7 +965,7 @@ if(Auth::check() && $user = Auth::user()) {
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         $input = Input::all();
@@ -1033,7 +1036,7 @@ if(Auth::check() && $user = Auth::user()) {
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         $input = Input::all();
@@ -1090,7 +1093,7 @@ if(Auth::check() && $user = Auth::user()) {
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         $input = Input::all();
@@ -1147,7 +1150,7 @@ if(Auth::check() && $user = Auth::user()) {
         }
         else{
             $isLoggedin = false;
-            return Redirect::to("auth/login");
+            return Redirect::to("login");
         }
 
         $input = Input::all();

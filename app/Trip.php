@@ -12,6 +12,7 @@ class Trip extends Model
         'driverrouteid',
         'posterprice',
         'status',
+        'feedback',
         'requestdate',
         'startdate',
         'enddate',

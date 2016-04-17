@@ -20,6 +20,7 @@ class CreateTripsTable extends Migration
             $table->foreign("driverrouteid")->references("id")->on('driverroutes');
             $table->float("posterprice");
             $table->integer("status");
+            $table->longText("feedback");
             $table->date("requestdate");
             $table->date("startdate");
             $table->date("enddate");

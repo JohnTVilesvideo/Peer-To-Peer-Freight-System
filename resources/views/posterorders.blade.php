@@ -9,7 +9,6 @@
     <thead>
     <tr>
         <th>#</th>
-        <th><input type="hidden" name="tripid"></th>
         <th>Start</th>
         <th>End</th>
         <th>Driver</th>
@@ -17,7 +16,8 @@
         <th>Capacity</th>
         <th>Offered</th>
         <th>Status</th>
-        <th>Order Date</th>
+        <th>Feedback</th>
+        <th>Action</th>
         <!--<th>Start Date</th>
         <th>End Date</th>
         <th>Cancel?</th>-->
@@ -30,7 +30,7 @@
                 <td>{{ $i + 1 }}</td>
                 {{ csrf_field() }}
                 <input type="hidden" name="userid" value="{{ $userId }}" />
-                <td><input type="hidden" name="trip" value="{{ $userTrips[$i]->tripid }}" /></td>
+                <input type="hidden" name="trip" value="{{ $userTrips[$i]->tripid }}" />
                 <td>{{ $userTrips[$i]->start }}</td>
                 <td>{{ $userTrips[$i]->end  }}</td>
                 <td>{{ $userTrips[$i]->drivername  }}</td>
@@ -38,6 +38,7 @@
                 <td>{{ $userTrips[$i]->capacity  }}</td>
                 <td>{{ $userTrips[$i]->offered }}</td>
                 <td>{{ $userTrips[$i]->status }}</td>
+                <td>{{ $userTrips[$i]->feedback }}</td>
                 <!--<th>{{ $userTrips[$i]->requestdate }}</th>
                                             <th>{{ $userTrips[$i]->requestdate }}</th>
                                             <th>{{ $userTrips[$i]->startdate }}</th>-->

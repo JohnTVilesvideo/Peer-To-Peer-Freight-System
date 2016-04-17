@@ -9,12 +9,13 @@
             <th>#</th>
             <th>Start</th>
             <th>End</th>
-            <th>Driver</th>
+            <th>Poster</th>
             <th>Price</th>
             <th>Capacity</th>
             <th>Offered</th>
             <th>Status</th>
             <th>Poster Price</th>
+            <th>Feedback</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -28,12 +29,13 @@
                     <input type="hidden" name="userid" value="{{ $userId }}"/>
                     <td>{{ $userTrips[$i]->start }}</td>
                     <td>{{ $userTrips[$i]->end  }}</td>
-                    <td>{{ $userTrips[$i]->drivername  }}</td>
+                    <td>{{ $userTrips[$i]->postername  }}</td>
                     <td>{{ $userTrips[$i]->yourprice }}</td>
                     <td>{{ $userTrips[$i]->capacity  }}</td>
                     <td>{{ $userTrips[$i]->offered }}</td>
                     <td>{{ $userTrips[$i]->status }}</td>
                     <td>{{ $userTrips[$i]->posterprice}}</td>
+                    <td>{{ $userTrips[$i]->feedback }}</td>
                     @if($userTrips[$i]->status == "Ordered")
                         <td><input type="submit" class="btn btn-warning" value="Reject" formaction="RejectOrder" formmethod="post"/></td>
                         <td><input type="submit" class="btn btn-success" value="Start" formaction="StartOrder" formmethod="post"/></td>

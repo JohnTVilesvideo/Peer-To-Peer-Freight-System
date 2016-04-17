@@ -17,6 +17,7 @@
         <th>Offered</th>
         @if($isLoggedin and $userType == "Poster")
             <th>Your Price</th>
+            <th>Feedback</th>
             <th>Place Order</th>
             @endif
     </tr>
@@ -39,6 +40,7 @@
                 <input type="hidden" name="userid" value="{{ $userId }}"/>
                 <input type="hidden" name="driverrouteid" value="{{ $driverroutes[$i]->driverrouteid }}" />
                 <td><input type="number" style="width: 50px;" name="posterprice" /></td>
+                <td><textarea name="feedback"></textarea> </td>
                 <td><input type="submit" class="btn btn-success" value="Order"> </td>
              @endif
         </tr>

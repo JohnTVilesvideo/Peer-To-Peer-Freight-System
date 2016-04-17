@@ -51,7 +51,8 @@
                             <li><a>Welcome {{ $userType }}: {{ $userName }} </a></li>
                             <li><a href="logout">Logout&nbsp;</a> </li>
                         @else
-                            <li><a href="login">Login &nbsp;</a> </li>
+                            <li><a href="login">Login</a> </li>
+                            <li><a href="register">Register &nbsp;</a> </li>
                         @endif
                     </ul>
                 </nav>
