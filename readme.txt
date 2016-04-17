@@ -14,4 +14,7 @@ Driverroutes:id, driverid(foreign key reference to id in users table), routeid(f
 Trips:(trips table stores orders of all drivers). id, userid(foreign key references to users table, means to which poster this order belongs), driverrouteid(foreign key references to driverroutes table), posterprice(how much the poster wants to pay), status(posible value 0, 1, 2. 0 means order placed, 1 means order accepted and started, 2 means order finished or ended).
 
 3.User interface flow diagrams
+see file
 
+4.Installation and configuration
+4.1 install xampp and start mysql and apache. 
